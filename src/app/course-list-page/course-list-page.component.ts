@@ -9,16 +9,17 @@ import { Course } from './course.model';
 export class CourseListPageComponent implements OnInit {
 	public courses: Course[];
 
-	constructor() { }
-
-	ngOnInit(): void {
+	constructor() {
 		this.courses = [{
 			id: 1,
 			title: 'Angular Mentoring Program',
 			duration: 600,
 			description: 'Overview of Angular with lectures and homework',
 			creationDate: new Date('2020-01-01')
-		}]
+		}];
+	}
+
+	ngOnInit(): void {
 	}
 
 }

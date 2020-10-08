@@ -9,14 +9,13 @@ import { User } from '../user.model';
 export class UserNameComponent implements OnInit {
   public user: User;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
     this.user = {
       id: 1,
       firstName: 'Harry',
       lastName: 'Potter'
-    }
+    };
   }
 
+  ngOnInit(): void {}
 }
