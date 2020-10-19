@@ -1,0 +1,16 @@
+<div class="course-wrapper mb-3">
+	<div class="course-data">
+		<div class="course-header-row">
+			<div class="course-name">{{course.title}}</div>
+			<div class="course-info">
+				<div class="course-duration px-3"><i class="icofont-clock-time mr-2"></i>{{duration}}</div>
+				<div class="course-date"><i class="icofont-ui-calendar mr-2"></i>{{course.creationDate | date}}</div>
+			</div>
+		</div>
+		<div class="course-description">{{course.description}}</div>
+	</div>
+	<div class="course-controls">
+		<button class="btn btn-primary m-1" (click)="onEdit(course.id)"><i class="icofont-ui-edit pr-2"></i>Edit</button>
+		<button class="btn btn-primary m-1" (click)="onDelete(course.id)"><i class="icofont-trash pr-2"></i>Delete</button>
+	</div>
+</div>

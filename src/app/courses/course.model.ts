@@ -1,15 +1,16 @@
 export interface ICourse {
 	id: number;
 	title: string;
-	creationDate: Date;
+	creationDate: string;
 	duration: number;
 	description: string;
 }
 
 export class Course implements ICourse {
-	constructor(public id: number,
+	constructor(
+		public id: number,
 		public title: string,
-		public creationDate: Date,
+		public creationDate: string,
 		public duration: number,
-		public description: string) {}
+		public description: string) { }
 }
