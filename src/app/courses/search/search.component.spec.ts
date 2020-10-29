@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchComponent } from './search.component';
 
-describe('SearchComponent', () => {
+describe('SearchComponent. Test as standalone', () => {
 	let component: SearchComponent;
 	let fixture: ComponentFixture<SearchComponent>;
 
@@ -21,5 +21,15 @@ describe('SearchComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	describe('searchClick', () => {
+		it('should log in the console', () => {
+			const query = 'test query';
+			spyOn(window.console, 'log');
+			component.query = query;
+			component.searchClick();
+			expect(window.console.log).toHaveBeenCalledWith(jasmine.any(String), query);
+		});
 	});
 });

@@ -22,4 +22,31 @@ describe('CoursesComponent', () => {
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
+
+	describe('editCourse', () => {
+		it('should show log', () => {
+			spyOn(window.console, 'log');
+			component.editCourse(1);
+
+			expect(window.console.log).toHaveBeenCalled();
+		});
+	});
+
+	describe('deleteCourse', () => {
+		it('should show log', () => {
+			spyOn(window.console, 'log');
+			component.deleteCourse(1);
+
+			expect(window.console.log).toHaveBeenCalled();
+		});
+	});
+
+	describe('loadMore', () => {
+		it('should show log', () => {
+			spyOn(window.console, 'log');
+			component.loadMore();
+
+			expect(window.console.log).toHaveBeenCalled();
+		});
+	});
 });
