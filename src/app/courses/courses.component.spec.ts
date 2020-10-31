@@ -10,8 +10,7 @@ describe('CoursesComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [CoursesComponent, OrderPipe]
-		})
-			.compileComponents();
+		}).compileComponents();
 	});
 
 	beforeEach(() => {

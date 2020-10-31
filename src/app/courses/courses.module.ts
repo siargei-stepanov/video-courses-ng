@@ -12,10 +12,16 @@ import { FilterPipe } from './filter.pipe';
 
 @NgModule({
 	exports: [CoursesComponent],
-	declarations: [CoursesComponent, CourseItemComponent, SearchComponent, NoDataComponent, HighlightDirective, DurationPipe, OrderPipe, FilterPipe],
-	imports: [
-		CommonModule,
-		FormsModule
-	]
+	declarations: [
+		CoursesComponent,
+		CourseItemComponent,
+		SearchComponent,
+		NoDataComponent,
+		HighlightDirective,
+		DurationPipe,
+		OrderPipe,
+		FilterPipe,
+	],
+	imports: [CommonModule, FormsModule],
 })
-export class CoursesModule { }
+export class CoursesModule {}
