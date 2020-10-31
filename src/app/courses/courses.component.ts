@@ -26,8 +26,14 @@ export class CoursesComponent implements OnInit {
 			topRated: false,
 			description: 'Overview of NodeJS with lectures and homework. Event loops and stuff.',
 			creationDate: '2020-12-01'
+		}, {
+			id: 3,
+			title: 'HTML/CSS Mentoring Program',
+			duration: 260,
+			topRated: false,
+			description: 'HTML and CSS courses for IT newcomers.',
+			creationDate: '2020-09-01'
 		}];
-		// this.courses = [];
 	}
 
 	public editCourse(id: number): void {
