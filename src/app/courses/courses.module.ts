@@ -4,10 +4,13 @@ import { CoursesComponent } from './courses.component';
 import { FormsModule } from '@angular/forms';
 import { CourseItemComponent } from './course-item/course-item.component';
 import { SearchComponent } from './search/search.component';
+import { NoDataComponent } from './no-data/no-data.component';
+import { HighlightDirective } from './course-item/highlight.directive';
+import { DurationPipe } from './duration.pipe';
 
 @NgModule({
 	exports: [CoursesComponent],
-	declarations: [CoursesComponent, CourseItemComponent, SearchComponent],
+	declarations: [CoursesComponent, CourseItemComponent, SearchComponent, NoDataComponent, HighlightDirective, DurationPipe],
 	imports: [
 		CommonModule,
 		FormsModule

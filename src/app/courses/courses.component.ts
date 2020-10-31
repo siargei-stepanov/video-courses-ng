@@ -16,15 +16,18 @@ export class CoursesComponent implements OnInit {
 			id: 1,
 			title: 'Angular Mentoring Program',
 			duration: 600,
+			topRated: true,
 			description: 'Overview of Angular with lectures and homework.',
-			creationDate: '2020-01-01'
+			creationDate: '2020-10-20'
 		}, {
 			id: 2,
 			title: 'NodeJS Mentoring Program',
 			duration: 740,
+			topRated: false,
 			description: 'Overview of NodeJS with lectures and homework. Event loops and stuff.',
-			creationDate: '2020-03-02'
+			creationDate: '2020-12-01'
 		}];
+		// this.courses = [];
 	}
 
 	public editCourse(id: number): void {
