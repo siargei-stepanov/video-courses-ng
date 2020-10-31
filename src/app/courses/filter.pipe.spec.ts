@@ -2,7 +2,8 @@ import { Course } from './course.model';
 import { FilterPipe } from './filter.pipe';
 
 describe('FilterPipe', () => {
-	let pipe: FilterPipe, courses: Course[];
+	let pipe: FilterPipe;
+	let courses: Course[];
 
 	beforeAll(() => {
 		pipe = new FilterPipe();
