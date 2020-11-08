@@ -2,7 +2,7 @@
 	<div class="header-wrapper">
 		<app-logo class="header-logo-wrapper"></app-logo>
 		<div class="header-controls-wrapper">
-			<app-logout class="header-control-item"></app-logout>
+			<app-logout class="header-control-item" (onLogoutEvent)="onLogout()"></app-logout>
 			<app-user-name class="header-control-item"></app-user-name>
 		</div>
 	</div>
