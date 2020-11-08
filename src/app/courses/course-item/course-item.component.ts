@@ -4,7 +4,7 @@ import { Course } from '../course.model';
 @Component({
 	selector: 'app-course-item',
 	templateUrl: './course-item.component.html',
-	styleUrls: ['./course-item.component.less']
+	styleUrls: ['./course-item.component.less'],
 })
 export class CourseItemComponent implements OnInit {
 	@Input() course: Course;
@@ -12,11 +12,9 @@ export class CourseItemComponent implements OnInit {
 	@Output() deleteCourseEvent = new EventEmitter<number>();
 	public duration: string;
 
-	constructor() { }
+	constructor() {}
 
-	ngOnInit(): void {
-		this.duration = `${Math.floor(this.course.duration / 60)}h ${this.course.duration % 60}m`;
-	}
+	ngOnInit(): void {}
 
 	public onEdit(id: number): void {
 		this.editCourseEvent.emit(id);

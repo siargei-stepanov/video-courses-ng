@@ -1,3 +1,5 @@
+@top-rated-color: rgba(0, 255, 0, 0.1);
+
 .course-wrapper {
 	border: 1px solid white;
 	border-radius: 6px;
@@ -5,25 +7,39 @@
 	display: flex;
 	padding: 20px;
 
+	&.top-rated {
+		background-color: @top-rated-color;
+		border-color: @top-rated-color;
+	}
+
 	.course-data {
 		margin-right: 10px;
 		flex-grow: 1;
+
 		& div {
 			display: flex;
-		}	
+		}
 	}
-	
+
 	.course-header-row {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
+
+	.course-star {
+		line-height: 24px;
+		color: orange;
+	}
+
 	.course-name {
 		font-weight: bold;
 		font-size: 18px;
 	}
+
 	.course-info {
 		color: grey;
+
 		& i {
 			line-height: 22px;
 		}
