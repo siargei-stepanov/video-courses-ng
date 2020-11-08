@@ -32,9 +32,8 @@ describe('AuthenticationService', () => {
 
 	it('should proper calculate isAuthenticated', () => {
 		expect(service.isAuthenticated()).toEqual(false);
-		
+
 		localStorage.setItem(AUTH_TOKEN_NAME, '{}');
 		expect(service.isAuthenticated()).toEqual(true);
 	});
-
 });

@@ -13,9 +13,7 @@ describe('CoursesComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [CoursesComponent, OrderPipe],
-			providers: [
-				{provide: CoursesService, useClass: MockCourseService}
-			]
+			providers: [{ provide: CoursesService, useClass: MockCourseService }],
 		}).compileComponents();
 
 		coursesService = TestBed.inject(CoursesService);
@@ -64,7 +62,10 @@ describe('CoursesComponent', () => {
 });
 
 class MockCourseService {
+	// tslint:disable-next-line
 	public removeById(id: number) {}
+	// tslint:disable-next-line
 	public remove(course: Course) {}
+	// tslint:disable-next-line
 	public getList() {}
 }

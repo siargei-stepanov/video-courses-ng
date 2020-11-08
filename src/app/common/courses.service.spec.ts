@@ -20,20 +20,22 @@ describe('CoursesService', () => {
 	});
 
 	it('should create a new course', () => {
-		const courses = service.create(new Course(5, 'test', '2020-01-01', 10, 'test', true));
+		const courses = service.create(
+			new Course(5, 'test', '2020-01-01', 10, 'test', true)
+		);
 		expect(courses.length).toEqual(4);
 	});
 
 	it('should get the course by id', () => {
 		const courseValue = service.getById(1);
-		expect(courseValue.id).toEqual(1)
+		expect(courseValue.id).toEqual(1);
 	});
 
 	it('should remove the course by id', () => {
 		const courses = service.removeById(1);
 		expect(courses.length).toEqual(2);
 	});
-	
+
 	it('should remove the course', () => {
 		const courses = service.remove(new Course(1, '', '', 10, '', false));
 		expect(courses.length).toEqual(2);
@@ -43,5 +45,5 @@ describe('CoursesService', () => {
 		service.update(new Course(2, 'sample', '2020-10-10', 15, 'desc', false));
 		const courseValue = service.getById(2);
 		expect(courseValue.title).toEqual('sample');
-	})
+	});
 });

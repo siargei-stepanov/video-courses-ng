@@ -23,7 +23,7 @@ describe('LogoutComponent', () => {
 	});
 
 	it('should trigger logout', (done) => {
-		component.onLogoutEvent.subscribe(() => {
+		component.logoutEvent.subscribe(() => {
 			expect(true).toBeTruthy();
 			done();
 		});

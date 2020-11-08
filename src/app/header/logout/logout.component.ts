@@ -6,13 +6,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 	styleUrls: ['./logout.component.less'],
 })
 export class LogoutComponent implements OnInit {
-	@Output() onLogoutEvent = new EventEmitter();
+	@Output() logoutEvent = new EventEmitter();
 
 	constructor() {}
 
 	ngOnInit(): void {}
 
 	public logout(): void {
-		this.onLogoutEvent.emit();
+		this.logoutEvent.emit();
 	}
 }

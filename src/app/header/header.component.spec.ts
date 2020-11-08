@@ -36,5 +36,6 @@ describe('HeaderComponent', () => {
 });
 
 class MockAuthentication {
+	// tslint:disable-next-line
 	public logout() {}
 }

@@ -7,7 +7,7 @@ export class AuthenticationService {
 	private AUTH_TOKEN_NAME = 'authentication';
 	constructor() {}
 
-	public login() {
+	public login(): void {
 		console.log('login');
 		localStorage.setItem(
 			this.AUTH_TOKEN_NAME,
@@ -21,7 +21,7 @@ export class AuthenticationService {
 		);
 	}
 
-	public logout() {
+	public logout(): void {
 		console.log('logout');
 		localStorage.removeItem(this.AUTH_TOKEN_NAME);
 	}
