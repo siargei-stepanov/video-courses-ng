@@ -43,10 +43,10 @@ describe('CourseItemComponent with testbed', () => {
 	});
 	describe('onDelete', () => {
 		it('should emit delete event', () => {
-			component.deleteCourseEvent.subscribe((id: number) =>
-				expect(id).toEqual(2)
+			component.deleteCourseEvent.subscribe((course: Course) =>
+				expect(course.id).toEqual(2)
 			);
-			component.onEdit(2);
+			component.onDelete(new Course(2, '', '', 1, '', false));
 		});
 	});
 });

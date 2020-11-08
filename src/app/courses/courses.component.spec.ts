@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesService } from '../common/courses.service';
+import { Course } from './course.model';
 
 import { CoursesComponent } from './courses.component';
 import { OrderPipe } from './order.pipe';
@@ -40,12 +41,14 @@ describe('CoursesComponent', () => {
 	});
 
 	describe('deleteCourse', () => {
-		it('should show log', () => {
-			spyOn(coursesService, 'removeById');
+		it('should delete the course', () => {
+			const course = new Course(1, '', '', 1, '', false);
+			spyOn(window, 'confirm').and.returnValue(true);
+			spyOn(coursesService, 'remove');
 			spyOn(component, 'searchCourse');
-			component.deleteCourse(1);
+			component.deleteCourse(course);
 
-			expect(coursesService.removeById).toHaveBeenCalledWith(1);
+			expect(coursesService.remove).toHaveBeenCalledWith(course);
 			expect(component.searchCourse).toHaveBeenCalled();
 		});
 	});
@@ -62,5 +65,6 @@ describe('CoursesComponent', () => {
 
 class MockCourseService {
 	public removeById(id: number) {}
+	public remove(course: Course) {}
 	public getList() {}
 }

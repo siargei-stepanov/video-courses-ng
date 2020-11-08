@@ -24,9 +24,12 @@ export class CoursesComponent implements OnInit {
 		console.log(`try to edit course id=${id}`);
 	}
 
-	public deleteCourse(id: number): void {
-		this.courses = this.coursesService.removeById(id);
-		this.searchCourse(this.searchQuery);
+	public deleteCourse(course: Course): void {
+		const shouldDelete = confirm(`Do you really want to delete course ${course.title}?`);
+		if (shouldDelete) {
+			this.courses = this.coursesService.remove(course);
+			this.searchCourse(this.searchQuery);
+		}
 	}
 
 	public loadMore(): void {
