@@ -12,6 +12,7 @@ export class CoursesComponent implements OnInit {
 	public filteredCourses: Course[];
 	private filterPipe = new FilterPipe();
 	private courses: Course[];
+	private searchQuery: string;
 
 	constructor(private coursesService: CoursesService) {}
 
@@ -24,7 +25,8 @@ export class CoursesComponent implements OnInit {
 	}
 
 	public deleteCourse(id: number): void {
-		console.log(`Delete course with id=${id}`);
+		this.courses = this.coursesService.removeById(id);
+		this.searchCourse(this.searchQuery);
 	}
 
 	public loadMore(): void {
@@ -32,6 +34,7 @@ export class CoursesComponent implements OnInit {
 	}
 
 	public searchCourse(query: string): void {
+		this.searchQuery = query;
 		this.filteredCourses = this.filterPipe.transform(this.courses, query);
 	}
 }
