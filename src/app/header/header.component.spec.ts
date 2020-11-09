@@ -7,6 +7,7 @@ describe('HeaderComponent', () => {
 	let component: HeaderComponent;
 	let fixture: ComponentFixture<HeaderComponent>;
 	let authService: AuthenticationService;
+	let isAuthenticated: boolean;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -17,6 +18,7 @@ describe('HeaderComponent', () => {
 		}).compileComponents();
 		authService = TestBed.inject(AuthenticationService);
 		spyOn(authService, 'logout');
+		spyOn(authService, 'isAuthenticated').and.callFake(() => isAuthenticated);
 	});
 
 	beforeEach(() => {
@@ -33,9 +35,25 @@ describe('HeaderComponent', () => {
 		component.onLogout();
 		expect(authService.logout).toHaveBeenCalled();
 	});
+
+	describe('isAuthenticated', () => {
+		it('should return false when auth service returns false', () => {
+			isAuthenticated = false;
+			expect(component.isAuthenticated()).toEqual(false);
+			expect(authService.isAuthenticated).toHaveBeenCalled();
+		});
+
+		it('should return false when auth service returns false', () => {
+			isAuthenticated = true;
+			expect(component.isAuthenticated()).toEqual(true);
+			expect(authService.isAuthenticated).toHaveBeenCalled();
+		});
+	});
 });
 
 class MockAuthentication {
 	// tslint:disable-next-line
 	public logout() {}
+	// tslint:disable-next-line
+	public isAuthenticated() {}
 }
