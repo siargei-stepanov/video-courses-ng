@@ -1,0 +1,39 @@
+<div class="login-form-centered">
+	<div class="login-form-wrapper">
+		<h4>Login</h4>
+		<form>
+			<div class="form-group">
+				<div class="d-flex justify-content-between">
+					<label for="email-input">E-mail:</label>
+					<span class="required">*required</span>
+				</div>
+				<input
+					type="email"
+					class="form-control"
+					id="email-input"
+					required
+					placeholder="Enter e-mail"
+				/>
+			</div>
+			<div class="form-group">
+				<div class="d-flex justify-content-between">
+					<label for="password-input">Password:</label>
+					<span class="required">*required</span>
+				</div>
+				<input
+					type="password"
+					required
+					class="form-control"
+					id="password-input"
+					placeholder="Password"
+				/>
+			</div>
+			<div class="form-group d-flex justify-content-between">
+				<a href="#" class="forgot-password">Forgot password?</a>
+				<button type="button" (click)="login()" class="btn btn-primary">
+					Login
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

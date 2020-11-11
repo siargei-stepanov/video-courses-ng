@@ -4,9 +4,10 @@ import { LoginPageComponent } from './login-page.component';
 import { LoginPageRoutingModule } from './login-page-routing.module';
 import { HeaderModule } from '../header/header.module';
 import { FooterModule } from '../footer/footer.module';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 @NgModule({
-	declarations: [LoginPageComponent],
+	declarations: [LoginPageComponent, LoginFormComponent],
 	imports: [CommonModule, LoginPageRoutingModule, HeaderModule, FooterModule],
 })
 export class LoginPageModule {}
