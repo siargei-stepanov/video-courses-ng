@@ -8,9 +8,8 @@ describe('LogoutComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [LogoutComponent]
-		})
-			.compileComponents();
+			declarations: [LogoutComponent],
+		}).compileComponents();
 	});
 
 	beforeEach(() => {
@@ -21,5 +20,13 @@ describe('LogoutComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should trigger logout', (done) => {
+		component.logoutEvent.subscribe(() => {
+			expect(true).toBeTruthy();
+			done();
+		});
+		component.logout();
 	});
 });
