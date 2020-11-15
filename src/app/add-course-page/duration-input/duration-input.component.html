@@ -1,0 +1,10 @@
+<div class="duration-input-wrapper row m-0">
+	<input
+		width="30"
+		type="text"
+		[(ngModel)]="duration"
+		class="form-control col-4"
+		(keyup)="onDurationChange()"
+	/>
+	<p class="dur-value d-flex col-2 my-0">{{ durationFormatted }}</p>
+</div>
