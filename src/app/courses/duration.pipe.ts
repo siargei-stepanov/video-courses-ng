@@ -7,7 +7,7 @@ export class DurationPipe implements PipeTransform {
 	transform(minutes: string): string {
 		const min = Number.parseInt(minutes, 10);
 		if (Number.isNaN(min)) {
-			return minutes;
+			return '';
 		}
 
 		if (min < 60) {
