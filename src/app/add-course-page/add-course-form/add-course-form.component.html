@@ -1,0 +1,66 @@
+<div class="add-course-form-centered">
+	<div class="add-course-form-wrapper">
+		<h4>New Course</h4>
+		<form>
+			<div class="form-group">
+				<div class="d-flex">
+					<label for="title-input">Title:</label>
+					<span class="required">*required</span>
+				</div>
+				<input
+					type="text"
+					class="form-control"
+					id="title-input"
+					required
+					placeholder="Course title"
+				/>
+			</div>
+			<div class="form-group">
+				<div class="d-flex">
+					<label for="description-input">Description:</label>
+					<span class="required">*required</span>
+				</div>
+				<textarea
+					class="form-control"
+					id="description-input"
+					required
+					placeholder="Add some words about the course"
+					rows="3"
+				></textarea>
+			</div>
+			<div class="form-group">
+				<div class="d-flex">
+					<label for="duration-input">Duration:</label>
+					<span class="required">*required</span>
+				</div>
+				<app-duration-input></app-duration-input>
+			</div>
+			<div class="form-group">
+				<div class="d-flex">
+					<label for="date-input">Date:</label>
+					<span class="required">*required</span>
+				</div>
+				<div class="row m-0">
+					<input
+						width="30"
+						class="form-control col-4"
+						type="date"
+						name="date-input"
+						id="date-input"
+					/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="d-flex">
+					<label for="authors-input">Authors:</label>
+					<span class="required">*required</span>
+				</div>
+				<p>Author component should be here</p>
+			</div>
+			<div class="form-group d-flex justify-content-end">
+				<button type="button" class="btn mx-3 btn-secondary" (click)="onCancel()">Cancel</button>
+				<button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+			</div>
+		</form>
+	</div>
+</div>

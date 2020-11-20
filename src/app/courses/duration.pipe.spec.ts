@@ -20,7 +20,7 @@ describe('DurationPipe', () => {
 		expect(pipe.transform('80')).toEqual('1 h 20 min');
 	});
 
-	it('should return the same value for the non number format', () => {
-		expect(pipe.transform('abc')).toEqual('abc');
+	it('should return the empty value for the non number format', () => {
+		expect(pipe.transform('abc')).toEqual('');
 	});
 });
