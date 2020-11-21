@@ -5,19 +5,19 @@ const routes: Routes = [
 	{
 		path: 'list',
 		loadChildren: () =>
-			import('./list-page/list-page.module').then((m) => m.ListPageModule),
+			import('./pages/list-page/list-page.module').then((m) => m.ListPageModule),
 	},
 	{
 		path: 'login',
 		loadChildren: () =>
-			import('./login-page/login-page.module').then((m) => m.LoginPageModule),
+			import('./pages/login-page/login-page.module').then((m) => m.LoginPageModule),
 	},
 	{
 		path: 'add-course',
 		loadChildren: () =>
-			import('./add-course-page/add-course-page.module').then((m) => m.AddCoursePageModule),
+			import('./pages/add-course-page/add-course-page.module').then((m) => m.AddCoursePageModule),
 	},
-	{ path: '', redirectTo: '/add-course', pathMatch: 'full' },
+	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
