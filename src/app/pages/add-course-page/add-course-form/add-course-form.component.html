@@ -11,6 +11,8 @@
 					type="text"
 					class="form-control"
 					id="title-input"
+					name="title"
+					[(ngModel)]="course.title"
 					required
 					placeholder="Course title"
 				/>
@@ -23,6 +25,8 @@
 				<textarea
 					class="form-control"
 					id="description-input"
+					name="description"
+					[(ngModel)]="course.description"
 					required
 					placeholder="Add some words about the course"
 					rows="3"
@@ -46,6 +50,7 @@
 						class="form-control col-4"
 						type="date"
 						name="date-input"
+						[(ngModel)]="course.creationDate"
 						id="date-input"
 					/>
 				</div>
@@ -55,7 +60,7 @@
 					<label for="authors-input">Authors:</label>
 					<span class="required">*required</span>
 				</div>
-				<p>Author component should be here</p>
+				<p>N/A</p>
 			</div>
 			<div class="form-group d-flex justify-content-end">
 				<button type="button" class="btn mx-3 btn-secondary" (click)="onCancel()">Cancel</button>
