@@ -53,6 +53,7 @@ export class CoursesService {
 				topRated: true,
 				description: 'Overview of Angular with lectures and homework.',
 				creationDate: '2020-10-20',
+				authors: ['Tolstoi', 'Dostoevsky', 'Lermontov']
 			},
 			{
 				id: 2,
@@ -62,6 +63,7 @@ export class CoursesService {
 				description:
 					'Overview of NodeJS with lectures and homework. Event loops and stuff.',
 				creationDate: '2020-12-01',
+				authors: ['Bill Gates', 'Steve Jobs']
 			},
 			{
 				id: 3,
@@ -70,6 +72,7 @@ export class CoursesService {
 				topRated: false,
 				description: 'HTML and CSS courses for IT newcomers.',
 				creationDate: '2020-09-01',
+				authors: ['Brad Pit', 'Leonardo Di Caprio']
 			},
 		];
 	}

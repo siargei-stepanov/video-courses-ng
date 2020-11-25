@@ -8,6 +8,9 @@ import { AddCourseFormComponent } from './add-course-form/add-course-form.compon
 import { DurationInputComponent } from './duration-input/duration-input.component';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbsModule } from '../../common/components/breadcrumbs/breadcrumbs.module';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	declarations: [
@@ -22,6 +25,9 @@ import { BreadcrumbsModule } from '../../common/components/breadcrumbs/breadcrum
 		BreadcrumbsModule,
 		FooterModule,
 		FormsModule,
+		MatChipsModule,
+		MatFormFieldModule,
+		MatIconModule,
 	],
 })
 export class AddCoursePageModule {}

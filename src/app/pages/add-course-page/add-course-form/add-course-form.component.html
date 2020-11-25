@@ -60,11 +60,35 @@
 					<label for="authors-input">Authors:</label>
 					<span class="required">*required</span>
 				</div>
-				<p>N/A</p>
+				<mat-form-field class="authors-chip-list">
+					<mat-chip-list #chipList aria-label="Author selection">
+						<mat-chip
+							*ngFor="let author of course.authors"
+							[removable]="true"
+							(removed)="removeAuthor(author)"
+						>
+							{{ author }}
+							<mat-icon matChipRemove>cancel</mat-icon>
+						</mat-chip>
+						<input
+							[matChipInputFor]="chipList"
+							[matChipInputAddOnBlur]="true"
+							(matChipInputTokenEnd)="addAuthor($event)"
+						/>
+					</mat-chip-list>
+				</mat-form-field>
 			</div>
 			<div class="form-group d-flex justify-content-end">
-				<button type="button" class="btn mx-3 btn-secondary" (click)="onCancel()">Cancel</button>
-				<button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+				<button
+					type="button"
+					class="btn mx-3 btn-secondary"
+					(click)="onCancel()"
+				>
+					Cancel
+				</button>
+				<button type="button" class="btn btn-primary" (click)="onSave()">
+					Save
+				</button>
 			</div>
 		</form>
 	</div>
