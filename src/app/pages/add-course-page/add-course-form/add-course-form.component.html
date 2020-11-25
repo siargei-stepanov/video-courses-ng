@@ -37,7 +37,7 @@
 					<label for="duration-input">Duration:</label>
 					<span class="required">*required</span>
 				</div>
-				<app-duration-input></app-duration-input>
+				<app-duration-input [(duration)]="course.duration" (durationChange)="onDurationChange($event)"></app-duration-input>
 			</div>
 			<div class="form-group">
 				<div class="d-flex">

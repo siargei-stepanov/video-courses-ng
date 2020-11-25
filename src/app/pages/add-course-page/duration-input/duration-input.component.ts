@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DurationPipe } from 'src/app/common/services/duration.pipe';
 
 @Component({
@@ -7,16 +7,21 @@ import { DurationPipe } from 'src/app/common/services/duration.pipe';
 	styleUrls: ['./duration-input.component.less'],
 })
 export class DurationInputComponent implements OnInit {
+	@Input() duration: string;
+	@Output() durationChange = new EventEmitter();
 	public durationFormatted: string;
-	public duration: string;
 	private durationPipe: DurationPipe;
 	constructor() {}
 
 	ngOnInit(): void {
 		this.durationPipe = new DurationPipe();
+		if (this.duration) {
+			this.onDurationChange();
+		}
 	}
 
 	public onDurationChange(): void {
 		this.durationFormatted = this.durationPipe.transform(this.duration);
+		this.durationChange.emit(this.duration);
 	}
 }

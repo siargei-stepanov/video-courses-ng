@@ -11,6 +11,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 })
 export class AddCourseFormComponent implements OnInit {
 	public course: Course;
+	private isAddPage: boolean;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -21,15 +22,16 @@ export class AddCourseFormComponent implements OnInit {
 	ngOnInit(): void {
 		this.route.paramMap.subscribe((routeParams) => {
 			const id = parseInt(routeParams.get('id'), 10);
-			const newCourse = new Course(null, '', '', 0, '', false, []);
+			const newCourse = new Course(new Date().getTime(), '', '', 0, '', false, []);
 			if (isNaN(id)) {
 				this.course = newCourse;
+				this.isAddPage = true;
 			} else {
 				const courseFromService = this.courseService.getById(id);
 				this.course = courseFromService ? courseFromService : newCourse;
+				this.isAddPage = !courseFromService;
 			}
 		});
-		// this.authors = ['Aizek Azimov', 'Bill Gates', 'Snowman'];
 	}
 
 	public addAuthor(event: MatChipInputEvent): void {
@@ -56,8 +58,17 @@ export class AddCourseFormComponent implements OnInit {
 		}
 	}
 
+	public onDurationChange(value: string): void {
+		this.course.duration = parseInt(value, 10);
+	}
+
 	public onSave(): void {
-		console.log('add course. on save', this.course);
+		if (this.isAddPage) {
+			this.courseService.create(this.course);
+		} else {
+			this.courseService.update(this.course);
+		}
+		this.router.navigateByUrl('/courses');
 	}
 
 	public onCancel(): void {
