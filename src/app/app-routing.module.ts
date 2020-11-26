@@ -4,24 +4,9 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 const routes: Routes = [
 	{
 		path: 'courses',
-		pathMatch: 'full',
 		loadChildren: () =>
 			import('./pages/list-page/list-page.module').then(
 				(m) => m.ListPageModule
-			),
-	},
-	{
-		path: 'courses/new',
-		loadChildren: () =>
-			import('./pages/add-course-page/add-course-page.module').then(
-				(m) => m.AddCoursePageModule
-			),
-	},
-	{
-		path: 'courses/:id',
-		loadChildren: () =>
-			import('./pages/add-course-page/add-course-page.module').then(
-				(m) => m.AddCoursePageModule
 			),
 	},
 	{
@@ -31,7 +16,7 @@ const routes: Routes = [
 				(m) => m.LoginPageModule
 			),
 	},
-	{ path: '', redirectTo: '/courses', pathMatch: 'full' },
+	{ path: '', redirectTo: 'courses', pathMatch: 'full' },
 	{
 		path: '**',
 		loadChildren: () =>
@@ -43,7 +28,9 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [
-		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+		RouterModule.forRoot(routes, {
+			preloadingStrategy: PreloadAllModules,
+		}),
 	],
 	exports: [RouterModule],
 })
