@@ -28,7 +28,7 @@ export class AddCourseFormComponent implements OnInit {
 				this.isAddPage = true;
 			} else {
 				const courseFromService = this.courseService.getById(id);
-				this.course = courseFromService ? courseFromService : newCourse;
+				this.course = courseFromService ? {...courseFromService} : newCourse;
 				this.isAddPage = !courseFromService;
 			}
 		});
