@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from './common/services/auth.guard';
 
 const routes: Routes = [
 	{
 		path: 'courses',
+		canActivate: [AuthGuard],
 		loadChildren: () =>
 			import('./pages/list-page/list-page.module').then(
 				(m) => m.ListPageModule
