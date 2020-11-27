@@ -1,5 +1,14 @@
 <div class="breadcrumbs">
 	<div class="breadcrumbs-wrapper">
-		Courses
+		<ul *ngIf="breadcrumbs.length > 0">
+			<li
+				*ngFor="let crumb of breadcrumbs; let first = first; let last = last"
+				[ngClass]="{ first: first, last: last }"
+				class="d-inline-block"
+			>
+				<span *ngIf="!crumb.url">{{ crumb.label }}</span>
+				<a *ngIf="crumb.url" routerLink="{{ crumb.url }}">{{ crumb.label }}</a>
+			</li>
+		</ul>
 	</div>
 </div>
