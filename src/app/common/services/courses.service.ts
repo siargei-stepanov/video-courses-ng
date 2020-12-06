@@ -1,79 +1,51 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Course } from '../course.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class CoursesService {
-	private courses: Course[];
-	constructor() {
-		this.courses = this.generateCourses();
+	private DEFAULT_PAGE_SIZE = 3;
+	constructor(private http: HttpClient) {}
+
+	public create(course: Course): Observable<any> {
+		return this.http.post(`${environment.BE_ENDPOINT}/courses`, course);
 	}
 
-	public create(course: Course): Course[] {
-		this.courses = this.courses.concat(course);
-		return this.courses;
+	public getList(
+		start = 0,
+		count = this.DEFAULT_PAGE_SIZE,
+		sort = 'date',
+		text?: string
+	): Observable<Course[]> {
+		let url = `${
+			environment.BE_ENDPOINT
+		}/courses?start=${start}&count=${count}&sort=${encodeURI(sort)}`;
+		if (text) {
+			url += `&textFragment=${encodeURI(text)}`;
+		}
+		return this.http.get<Course[]>(url);
 	}
 
-	public getList(): Course[] {
-		return this.courses;
+	public getById(id: number): Observable<Course> {
+		return this.http.get<Course>(`${environment.BE_ENDPOINT}/courses/${id}`);
 	}
 
-	public getById(id: number): Course {
-		return this.courses.find((course) => {
-			return course.id === id;
-		});
+	public update(course: Course): Observable<Course> {
+		return this.http.patch<Course>(
+			`${environment.BE_ENDPOINT}/courses/${course.id}`,
+			course
+		);
 	}
 
-	public update(course: Course): void {
-		this.remove(course);
-		this.create(course);
+	public remove(course: Course): Observable<any> {
+		return this.http.delete(`${environment.BE_ENDPOINT}/courses/${course.id}`);
 	}
 
-	public remove(course: Course): Course[] {
-		this.courses = this.courses.filter((courseValue) => {
-			return courseValue.id !== course.id;
-		});
-		return this.courses;
-	}
-
-	public removeById(id: number): Course[] {
-		this.courses = this.courses.filter((course) => {
-			return course.id !== id;
-		});
-		return this.courses;
-	}
-
-	private generateCourses(): Course[] {
-		return [
-			{
-				id: 1,
-				title: 'Angular Mentoring Program',
-				duration: 600,
-				topRated: true,
-				description: 'Overview of Angular with lectures and homework.',
-				creationDate: '2020-10-20',
-				authors: ['Tolstoi', 'Dostoevsky', 'Lermontov']
-			},
-			{
-				id: 2,
-				title: 'NodeJS Mentoring Program',
-				duration: 740,
-				topRated: false,
-				description:
-					'Overview of NodeJS with lectures and homework. Event loops and stuff.',
-				creationDate: '2020-12-01',
-				authors: ['Bill Gates', 'Steve Jobs']
-			},
-			{
-				id: 3,
-				title: 'HTML/CSS Mentoring Program',
-				duration: 260,
-				topRated: false,
-				description: 'HTML and CSS courses for IT newcomers.',
-				creationDate: '2020-09-01',
-				authors: ['Brad Pit', 'Leonardo Di Caprio']
-			},
-		];
+	public removeById(id: number): Observable<any> {
+		return this.remove({ id } as Course);
 	}
 }

@@ -9,9 +9,9 @@
 		</button>
 	</div>
 </div>
-<div *ngIf="filteredCourses?.length">
+<div *ngIf="courses?.length">
 	<app-course-item
-		*ngFor="let course of filteredCourses | order"
+		*ngFor="let course of courses"
 		[course]="course"
 		(editCourseEvent)="editCourse($event)"
 		(deleteCourseEvent)="deleteCourse($event)"
@@ -22,6 +22,6 @@
 		<i class="icofont-refresh pr-2"></i>Load More
 	</button>
 </div>
-<div *ngIf="filteredCourses?.length === 0" class="my-2">
+<div *ngIf="courses?.length === 0" class="my-2">
 	<app-no-data></app-no-data>
 </div>

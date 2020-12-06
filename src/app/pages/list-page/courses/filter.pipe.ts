@@ -11,7 +11,7 @@ export class FilterPipe implements PipeTransform {
 			return courses;
 		}
 		return courses.filter((v) => {
-			return v.title.toLowerCase().includes(query.toLowerCase());
+			return v.name.toLowerCase().includes(query.toLowerCase());
 		});
 	}
 }

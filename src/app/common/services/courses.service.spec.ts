@@ -44,6 +44,6 @@ describe('CoursesService', () => {
 	it('should update the course', () => {
 		service.update(new Course(2, 'sample', '2020-10-10', 15, 'desc', false));
 		const courseValue = service.getById(2);
-		expect(courseValue.title).toEqual('sample');
+		expect(courseValue.name).toEqual('sample');
 	});
 });

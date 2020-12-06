@@ -1,28 +1,47 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TokenData, UserData } from '../auth.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthenticationService {
 	private AUTH_TOKEN_NAME = 'authentication';
-	constructor() {}
+	constructor(private http: HttpClient) {}
 
-	public login(): void {
-		console.log('login');
-		localStorage.setItem(
-			this.AUTH_TOKEN_NAME,
-			JSON.stringify({
-				token: 'fakeToken',
-				user: {
-					firstName: 'Harry',
-					lastName: 'Potter',
-				},
+	public login(login: string, password: string): Promise<void> {
+		return this.http
+			.post(`${environment.BE_ENDPOINT}/auth/login`, {
+				login,
+				password,
 			})
-		);
+			.toPromise()
+			.then((tokenData: TokenData) => {
+				const token = tokenData.token;
+
+				return this.http
+					.post(`${environment.BE_ENDPOINT}/auth/userInfo`, {
+						token,
+					})
+					.toPromise()
+					.then((userData: UserData) => {
+						localStorage.setItem(
+							this.AUTH_TOKEN_NAME,
+							JSON.stringify({
+								token,
+								user: {
+									id: userData.id,
+									firstName: userData.name.first,
+									lastName: userData.name.last,
+								},
+							})
+						);
+					});
+			});
 	}
 
 	public logout(): void {
-		console.log('logout');
 		localStorage.removeItem(this.AUTH_TOKEN_NAME);
 	}
 
@@ -33,8 +52,7 @@ export class AuthenticationService {
 	}
 
 	public getUserInfo(): any {
-		console.log('getUserInfo');
-		const authData = JSON.parse(localStorage[this.AUTH_TOKEN_NAME]);
+		const authData = JSON.parse(localStorage[this.AUTH_TOKEN_NAME] || '{}');
 
 		return authData;
 	}
