@@ -1,5 +1,5 @@
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SearchCourseService } from 'src/app/common/services/search-course.service';
 
 @Component({
 	selector: 'app-search',
@@ -7,14 +7,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 	styleUrls: ['./search.component.less'],
 })
 export class SearchComponent implements OnInit {
-	@Output() searchCourseEvent = new EventEmitter<string>();
 	public query = '';
 
-	constructor() {}
+	constructor(private searchCourseService: SearchCourseService) {}
 
 	ngOnInit(): void {}
 
-	public searchClick(): void {
-		this.searchCourseEvent.emit(this.query);
+	public searchKeyUp(): void {
+		this.searchCourseService.getSubject().next(this.query);
 	}
 }

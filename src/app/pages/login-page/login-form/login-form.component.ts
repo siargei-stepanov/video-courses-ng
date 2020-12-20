@@ -18,15 +18,15 @@ export class LoginFormComponent implements OnInit {
 	ngOnInit(): void {}
 
 	public loginSubmit(): void {
-		this.authService
-			.login(this.login, this.password)
-			.then(() => {
+		this.authService.login(this.login, this.password).subscribe(
+			() => {
 				this.router.navigateByUrl('courses');
-			})
-			.catch(() => {
+			},
+			() => {
 				alert(
 					'Your login/password combination is not correct. Please check your creds and try one more time.'
 				);
-			});
+			}
+		);
 	}
 }

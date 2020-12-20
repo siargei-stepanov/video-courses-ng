@@ -1,7 +1,6 @@
 <div class="d-flex justify-content-between">
 	<app-search
 		class="d-flex py-3"
-		(searchCourseEvent)="searchCourse($event)"
 	></app-search>
 	<div class="align-self-center">
 		<button (click)="addCourse()" type="button" name="add-course" class="btn btn-primary">
@@ -9,7 +8,7 @@
 		</button>
 	</div>
 </div>
-<div *ngIf="courses?.length">
+<div *ngIf="hasData">
 	<app-course-item
 		*ngFor="let course of courses"
 		[course]="course"
@@ -22,6 +21,6 @@
 		<i class="icofont-refresh pr-2"></i>Load More
 	</button>
 </div>
-<div *ngIf="courses?.length === 0" class="my-2">
+<div *ngIf="!hasData" class="my-2">
 	<app-no-data></app-no-data>
 </div>

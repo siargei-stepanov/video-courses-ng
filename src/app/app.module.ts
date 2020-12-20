@@ -9,6 +9,8 @@ import { FooterModule } from './common/components/footer/footer.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './common/auth-interceptor';
+import { LoaderModule } from './common/components/loader/loader.module';
+import { LoaderInterceptor } from './common/components/loader/loader.interceptopr';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -18,6 +20,7 @@ import { AuthInterceptor } from './common/auth-interceptor';
 		BreadcrumbsModule,
 		HeaderModule,
 		FooterModule,
+		LoaderModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
 	],
@@ -25,6 +28,11 @@ import { AuthInterceptor } from './common/auth-interceptor';
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,
+			multi: true,
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: LoaderInterceptor,
 			multi: true,
 		},
 	],
