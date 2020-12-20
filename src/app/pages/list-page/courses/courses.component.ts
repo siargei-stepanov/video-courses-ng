@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoursesService } from '../../../common/services/courses.service';
 import { Course } from '../../../common/course.model';
 import { FilterPipe } from './filter.pipe';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-courses',
@@ -14,22 +15,28 @@ export class CoursesComponent implements OnInit {
 	private courses: Course[];
 	private searchQuery: string;
 
-	constructor(private coursesService: CoursesService) {}
+	constructor(private coursesService: CoursesService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.filteredCourses = this.courses = this.coursesService.getList();
 	}
 
 	public editCourse(id: number): void {
-		console.log(`try to edit course id=${id}`);
+		this.router.navigateByUrl(`/courses/${id}`);
 	}
 
 	public deleteCourse(course: Course): void {
-		const shouldDelete = confirm(`Do you really want to delete course ${course.title}?`);
+		const shouldDelete = confirm(
+			`Do you really want to delete course ${course.title}?`
+		);
 		if (shouldDelete) {
 			this.courses = this.coursesService.remove(course);
 			this.searchCourse(this.searchQuery);
 		}
+	}
+
+	public addCourse(): void {
+		this.router.navigateByUrl('/courses/new');
 	}
 
 	public loadMore(): void {

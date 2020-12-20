@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/common/services/authentication.service';
 
 @Component({
@@ -7,12 +8,12 @@ import { AuthenticationService } from 'src/app/common/services/authentication.se
 	styleUrls: ['./login-form.component.less'],
 })
 export class LoginFormComponent implements OnInit {
-	constructor(private authService: AuthenticationService) {}
+	constructor(private authService: AuthenticationService, private router: Router) {}
 
 	ngOnInit(): void {}
 
 	public login(): void {
-		console.log('login clicked!');
 		this.authService.login();
+		this.router.navigateByUrl('courses');
 	}
 }
