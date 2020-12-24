@@ -1,6 +1,7 @@
 <div class="add-course-form-centered">
 	<div class="add-course-form-wrapper">
-		<h4>New Course</h4>
+		<h4 *ngIf="isAddPage">New Course</h4>
+		<h4 *ngIf="!isAddPage">Edit Course</h4>
 		<form>
 			<div class="form-group">
 				<div class="d-flex">
@@ -12,7 +13,7 @@
 					class="form-control"
 					id="title-input"
 					name="title"
-					[(ngModel)]="course.title"
+					[(ngModel)]="course.name"
 					required
 					placeholder="Course title"
 				/>
@@ -37,7 +38,10 @@
 					<label for="duration-input">Duration:</label>
 					<span class="required">*required</span>
 				</div>
-				<app-duration-input [(duration)]="course.duration" (durationChange)="onDurationChange($event)"></app-duration-input>
+				<app-duration-input
+					[(duration)]="course.length"
+					(durationChange)="onDurationChange($event)"
+				></app-duration-input>
 			</div>
 			<div class="form-group">
 				<div class="d-flex">
@@ -50,7 +54,7 @@
 						class="form-control col-4"
 						type="date"
 						name="date-input"
-						[(ngModel)]="course.creationDate"
+						[(ngModel)]="course.date"
 						id="date-input"
 					/>
 				</div>
@@ -67,15 +71,23 @@
 							[removable]="true"
 							(removed)="removeAuthor(author)"
 						>
-							{{ author }}
+							{{ author.name }}
 							<mat-icon matChipRemove>cancel</mat-icon>
 						</mat-chip>
 						<input
 							[matChipInputFor]="chipList"
 							[matChipInputAddOnBlur]="true"
-							(matChipInputTokenEnd)="addAuthor($event)"
+							[matAutocomplete]="auto"
 						/>
 					</mat-chip-list>
+					<mat-autocomplete
+						#auto="matAutocomplete"
+						(optionSelected)="selectAuthor($event)"
+					>
+						<mat-option *ngFor="let author of authors | async" [value]="author">
+							{{ author.name }}
+						</mat-option>
+					</mat-autocomplete>
 				</mat-form-field>
 			</div>
 			<div class="form-group d-flex justify-content-end">

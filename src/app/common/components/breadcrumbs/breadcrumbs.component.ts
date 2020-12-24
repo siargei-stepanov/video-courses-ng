@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class BreadcrumbsComponent implements OnInit {
 		});
 	}
 
-	private parseBreadcrumbs(): void {
+	private async parseBreadcrumbs(): Promise<void> {
 		const url = this.router.routerState.snapshot.url;
 		this.breadcrumbs = [];
 
@@ -47,18 +47,8 @@ export class BreadcrumbsComponent implements OnInit {
 			// maybe the part is a course id
 			const id = parseInt(part, 10);
 			if (!isNaN(id)) {
-				const course = this.coursesService.getById(id);
-				if (course) {
-					this.breadcrumbs.push({ label: course.title });
-				} else {
-					console.error(
-						'we cannot find the course with the following id',
-						id,
-						'for path',
-						url
-					);
-					this.breadcrumbs.push({ label: '???' });
-				}
+				const course = await this.coursesService.getById(id).toPromise();
+				this.breadcrumbs.push({ label: course.name || id });
 			}
 		}
 		if (this.breadcrumbs.length) {

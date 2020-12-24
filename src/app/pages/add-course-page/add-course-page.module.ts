@@ -11,6 +11,7 @@ import { BreadcrumbsModule } from '../../common/components/breadcrumbs/breadcrum
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
 		MatChipsModule,
 		MatFormFieldModule,
 		MatIconModule,
+		MatAutocompleteModule,
 	],
 })
 export class AddCoursePageModule {}

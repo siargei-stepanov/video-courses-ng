@@ -1,56 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Course } from 'src/app/common/course.model';
+import { Author, Course } from 'src/app/common/course.model';
 import { CoursesService } from 'src/app/common/services/courses.service';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { Observable, Subscription } from 'rxjs';
+import { AuthorsService } from 'src/app/common/services/authors.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
 	selector: 'app-add-course-form',
 	templateUrl: './add-course-form.component.html',
 	styleUrls: ['./add-course-form.component.less'],
 })
-export class AddCourseFormComponent implements OnInit {
+export class AddCourseFormComponent implements OnInit, OnDestroy {
 	public course: Course;
-	private isAddPage: boolean;
+	public isAddPage: boolean;
+	public authors: Observable<Author[]>;
+	private subscribtions: Subscription[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
 		private courseService: CoursesService,
+		private authorsService: AuthorsService,
 		private router: Router
 	) {}
 
 	ngOnInit(): void {
+		this.authors = this.authorsService.getAuthors();
 		this.route.paramMap.subscribe((routeParams) => {
 			const id = parseInt(routeParams.get('id'), 10);
-			const newCourse = new Course(new Date().getTime(), '', '', 0, '', false, []);
+			const newCourse = new Course(null, '', '', 0, '', false, []);
+			this.course = newCourse;
 			if (isNaN(id)) {
-				this.course = newCourse;
 				this.isAddPage = true;
 			} else {
-				const courseFromService = this.courseService.getById(id);
-				this.course = courseFromService ? {...courseFromService} : newCourse;
-				this.isAddPage = !courseFromService;
+				this.subscribtions.push(
+					this.courseService.getById(id).subscribe(
+						(data) => {
+							this.course = data;
+							this.isAddPage = false;
+						},
+						(error) => {
+							console.log(
+								'cannot find course. probably a new course should be here',
+								error
+							);
+							this.course = newCourse;
+							this.isAddPage = true;
+						}
+					)
+				);
 			}
 		});
 	}
 
-	public addAuthor(event: MatChipInputEvent): void {
-		const input = event.input;
-		const value = event.value;
-
-		// Add the value to the list
-		if ((value || '').trim()) {
-			this.course.authors.push(value.trim());
-		}
-
-		// Reset the input value
-		if (input) {
-			input.value = '';
-		}
-	}
-
 	public removeAuthor(event): void {
-		console.log('remove author', event);
 		const index = this.course.authors.indexOf(event);
 
 		if (index >= 0) {
@@ -59,19 +63,36 @@ export class AddCourseFormComponent implements OnInit {
 	}
 
 	public onDurationChange(value: string): void {
-		this.course.duration = parseInt(value, 10);
+		this.course.length = parseInt(value, 10);
 	}
 
 	public onSave(): void {
 		if (this.isAddPage) {
-			this.courseService.create(this.course);
+			this.subscribtions.push(
+				this.courseService.create(this.course).subscribe(() => {
+					this.router.navigateByUrl('courses');
+				})
+			);
 		} else {
-			this.courseService.update(this.course);
+			this.subscribtions.push(
+				this.courseService.update(this.course).subscribe(() => {
+					this.router.navigateByUrl('courses');
+				})
+			);
 		}
-		this.router.navigateByUrl('/courses');
 	}
 
 	public onCancel(): void {
 		this.router.navigateByUrl('/courses');
+	}
+
+	public selectAuthor($event: MatAutocompleteSelectedEvent): void {
+		this.course.authors.push($event.option.value);
+	}
+
+	ngOnDestroy(): void {
+		this.subscribtions.forEach((subscribtion) => {
+			subscribtion.unsubscribe();
+		});
 	}
 }

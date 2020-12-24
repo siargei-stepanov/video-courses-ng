@@ -7,20 +7,27 @@ import { BreadcrumbsModule } from './common/components/breadcrumbs/breadcrumbs.m
 import { HeaderModule } from './common/components/header/header.module';
 import { FooterModule } from './common/components/footer/footer.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './common/auth-interceptor';
 
 @NgModule({
-	declarations: [
-		AppComponent
-	],
+	declarations: [AppComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		BreadcrumbsModule,
 		HeaderModule,
 		FooterModule,
-		BrowserAnimationsModule
+		HttpClientModule,
+		BrowserAnimationsModule,
 	],
-	providers: [],
-	bootstrap: [AppComponent]
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptor,
+			multi: true,
+		},
+	],
+	bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

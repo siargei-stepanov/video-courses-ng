@@ -1,13 +1,13 @@
-<div appHighlight [date]="course?.creationDate" [ngClass]="{'top-rated': course.topRated}" class="course-wrapper mb-3">
+<div appHighlight [date]="course?.date" [ngClass]="{'top-rated': course.isTopRated}" class="course-wrapper mb-3">
 	<div class="course-data">
 		<div class="course-header-row">
 			<div>
-				<div class="course-name">{{course.title | uppercase}}</div>
-				<div *ngIf="course.topRated" class="course-star icofont-star ml-2"></div>
+				<div class="course-name">{{course.name | uppercase}}</div>
+				<div *ngIf="course.isTopRated" class="course-star icofont-star ml-2"></div>
 			</div>
 			<div class="course-info">
-				<div class="course-duration px-3"><i class="icofont-clock-time mr-2"></i>{{course.duration | duration}}</div>
-				<div class="course-date"><i class="icofont-ui-calendar mr-2"></i>{{course.creationDate | date}}</div>
+				<div class="course-duration px-3"><i class="icofont-clock-time mr-2"></i>{{course.length | duration}}</div>
+				<div class="course-date"><i class="icofont-ui-calendar mr-2"></i>{{course.date | date}}</div>
 			</div>
 		</div>
 		<div class="course-description">{{course.description}}</div>
