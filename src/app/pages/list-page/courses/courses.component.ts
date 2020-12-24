@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../../common/services/courses.service';
 import { Course } from '../../../common/course.model';
-import { FilterPipe } from './filter.pipe';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-
+import {
+	debounceTime,
+	distinctUntilChanged,
+	filter,
+	map,
+	switchMap,
+} from 'rxjs/operators';
+import { SearchCourseService } from 'src/app/common/services/search-course.service';
 @Component({
 	selector: 'app-courses',
 	templateUrl: './courses.component.html',
@@ -12,16 +18,33 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class CoursesComponent implements OnInit, OnDestroy {
 	public courses: Course[];
+	// public courses$: Observable<Course[]>;
+	public hasData: boolean;
 	private searchQuery: string;
 	private coursePage: number;
 	private COURSE_PER_PAGE = 3;
 	private DEFAULT_SORT = 'date';
 	private subscribtions: Subscription[] = [];
 
-	constructor(private coursesService: CoursesService, private router: Router) {}
+	constructor(
+		private coursesService: CoursesService,
+		private router: Router,
+		private searchCourseService: SearchCourseService
+	) {}
 
 	ngOnInit(): void {
 		this.coursePage = 1;
+
+		this.searchCourseService
+			.getSubject()
+			.pipe(
+				map((query: string) => (query || '').trim()),
+				filter((query: string) => query.length >= 3 || query.length === 0),
+				distinctUntilChanged(),
+				debounceTime(500),
+				switchMap((query: string) => this.searchCourse(query))
+			)
+			.subscribe();
 		this.updateCourses();
 	}
 
@@ -56,21 +79,30 @@ export class CoursesComponent implements OnInit, OnDestroy {
 		this.updateCourses();
 	}
 
-	public searchCourse(query: string): void {
+	public searchCourse(query: string): Observable<Course[]> {
 		this.searchQuery = query;
 		this.coursePage = 1;
-		this.updateCourses(this.searchQuery);
+		return this.updateCourses(query);
 	}
 
-	private updateCourses(text?: string): void {
-		this.subscribtions.push(this.coursesService.getList(
+	public setCourses(courses: Course[]): void {
+		this.courses = courses;
+		this.hasData = courses.length > 0;
+	}
+
+	private updateCourses(text?: string): Observable<Course[]> {
+		const observable = this.coursesService.getList(
 			0,
 			this.coursePage * this.COURSE_PER_PAGE,
 			this.DEFAULT_SORT,
 			text || this.searchQuery
-		).subscribe((data) => {
-			this.courses = data;
-		}));
+		);
+
+		observable.subscribe((data) => {
+			this.setCourses(data);
+		});
+
+		return observable;
 	}
 
 	ngOnDestroy(): void {
