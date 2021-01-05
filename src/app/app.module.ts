@@ -11,6 +11,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './common/auth-interceptor';
 import { LoaderModule } from './common/components/loader/loader.module';
 import { LoaderInterceptor } from './common/components/loader/loader.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store/reducers';
+import { effects } from './store/effects';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -23,6 +27,8 @@ import { LoaderInterceptor } from './common/components/loader/loader.interceptor
 		LoaderModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
+		StoreModule.forRoot(reducers),
+		EffectsModule.forRoot(effects),
 	],
 	providers: [
 		{

@@ -28,7 +28,6 @@ export class LoaderInterceptor implements HttpInterceptor {
 			}),
 			catchError((err) => {
 				this.loaderService.hideLoader();
-				console.error('Error in request', err);
 				throw err;
 			})
 		);

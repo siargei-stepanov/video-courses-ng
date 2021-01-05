@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/common/services/authentication.service';
+import { Store } from '@ngrx/store';
+import { login } from 'src/app/store/actions/user.actions';
 
 @Component({
 	selector: 'app-login-form',
@@ -10,23 +10,11 @@ import { AuthenticationService } from 'src/app/common/services/authentication.se
 export class LoginFormComponent implements OnInit {
 	public login: string;
 	public password: string;
-	constructor(
-		private authService: AuthenticationService,
-		private router: Router
-	) {}
+	constructor(private store: Store) {}
 
 	ngOnInit(): void {}
 
 	public loginSubmit(): void {
-		this.authService.login(this.login, this.password).subscribe(
-			() => {
-				this.router.navigateByUrl('courses');
-			},
-			() => {
-				alert(
-					'Your login/password combination is not correct. Please check your creds and try one more time.'
-				);
-			}
-		);
+		this.store.dispatch(login({ login: this.login, password: this.password }));
 	}
 }
