@@ -8,9 +8,9 @@
 		</button>
 	</div>
 </div>
-<div *ngIf="hasData">
+<div *ngIf="hasData$ | async">
 	<app-course-item
-		*ngFor="let course of courses"
+		*ngFor="let course of courses$ | async"
 		[course]="course"
 		(editCourseEvent)="editCourse($event)"
 		(deleteCourseEvent)="deleteCourse($event)"
@@ -21,6 +21,6 @@
 		<i class="icofont-refresh pr-2"></i>Load More
 	</button>
 </div>
-<div *ngIf="!hasData" class="my-2">
+<div *ngIf="!(hasData$ | async)" class="my-2">
 	<app-no-data></app-no-data>
 </div>
