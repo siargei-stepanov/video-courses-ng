@@ -84,7 +84,10 @@
 						#auto="matAutocomplete"
 						(optionSelected)="selectAuthor($event)"
 					>
-						<mat-option *ngFor="let author of authors | async" [value]="author">
+						<mat-option
+							*ngFor="let author of authors$ | async"
+							[value]="author"
+						>
 							{{ author.name }}
 						</mat-option>
 					</mat-autocomplete>
