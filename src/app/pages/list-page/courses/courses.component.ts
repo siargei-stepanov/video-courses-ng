@@ -1,39 +1,44 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CoursesService } from '../../../common/services/courses.service';
 import { Course } from '../../../common/course.model';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
 	debounceTime,
 	distinctUntilChanged,
 	filter,
 	map,
-	switchMap,
+	tap,
 } from 'rxjs/operators';
 import { SearchCourseService } from 'src/app/common/services/search-course.service';
+import { Store } from '@ngrx/store';
+import {
+	deleteCourse,
+	increaseCount,
+	loadCourses,
+	setCoursesParams,
+} from 'src/app/store/actions/courses.actions';
+import {
+	selectCoursesList,
+	selectHasData,
+} from 'src/app/store/selectors/courses.selectors';
 @Component({
 	selector: 'app-courses',
 	templateUrl: './courses.component.html',
 	styleUrls: ['./courses.component.less'],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
-	public courses: Course[];
-	// public courses$: Observable<Course[]>;
-	public hasData: boolean;
-	private searchQuery: string;
-	private coursePage: number;
-	private COURSE_PER_PAGE = 3;
-	private DEFAULT_SORT = 'date';
+	public courses$ = this.store.select(selectCoursesList);
+	public hasData$ = this.store.select(selectHasData);
 	private subscribtions: Subscription[] = [];
 
 	constructor(
-		private coursesService: CoursesService,
 		private router: Router,
+		private store: Store,
 		private searchCourseService: SearchCourseService
 	) {}
 
 	ngOnInit(): void {
-		this.coursePage = 1;
+		this.store.dispatch(loadCourses());
 
 		this.searchCourseService
 			.getSubject()
@@ -42,10 +47,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
 				filter((query: string) => query.length >= 3 || query.length === 0),
 				distinctUntilChanged(),
 				debounceTime(500),
-				switchMap((query: string) => this.searchCourse(query))
+				tap((query: string) => this.searchCourse(query))
 			)
 			.subscribe();
-		this.updateCourses();
 	}
 
 	public editCourse(id: number): void {
@@ -57,16 +61,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 			`Do you really want to delete course ${course.name}?`
 		);
 		if (shouldDelete) {
-			this.subscribtions.push(
-				this.coursesService.remove(course).subscribe(
-					() => {
-						this.updateCourses();
-					},
-					(error) => {
-						console.error('cannot delete the course', error);
-					}
-				)
-			);
+			this.store.dispatch(deleteCourse(course));
 		}
 	}
 
@@ -75,34 +70,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
 	}
 
 	public loadMore(): void {
-		this.coursePage++;
-		this.updateCourses();
+		this.store.dispatch(increaseCount());
 	}
 
-	public searchCourse(query: string): Observable<Course[]> {
-		this.searchQuery = query;
-		this.coursePage = 1;
-		return this.updateCourses(query);
-	}
-
-	public setCourses(courses: Course[]): void {
-		this.courses = courses;
-		this.hasData = courses.length > 0;
-	}
-
-	private updateCourses(text?: string): Observable<Course[]> {
-		const observable = this.coursesService.getList(
-			0,
-			this.coursePage * this.COURSE_PER_PAGE,
-			this.DEFAULT_SORT,
-			text || this.searchQuery
-		);
-
-		observable.subscribe((data) => {
-			this.setCourses(data);
-		});
-
-		return observable;
+	public searchCourse(query: string): void {
+		this.store.dispatch(setCoursesParams({ query, count: 3 }));
+		this.store.dispatch(loadCourses());
 	}
 
 	ngOnDestroy(): void {

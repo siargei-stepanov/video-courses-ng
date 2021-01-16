@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/common/services/authentication.service';
-import { User } from '../user.model';
+import { select, Store } from '@ngrx/store';
+import { selectFullName } from 'src/app/store/selectors/user.selectors';
 
 @Component({
 	selector: 'app-user-name',
@@ -8,11 +8,9 @@ import { User } from '../user.model';
 	styleUrls: ['./user-name.component.less'],
 })
 export class UserNameComponent implements OnInit {
-	public user: User;
+	public userName$ = this.store.pipe(select(selectFullName));
 
-	constructor(private authService: AuthenticationService) {}
+	constructor(private store: Store) {}
 
-	ngOnInit(): void {
-		this.user = this.authService.getUserInfo().user;
-	}
+	ngOnInit(): void {}
 }

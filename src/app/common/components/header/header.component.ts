@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../../../common/services/authentication.service';
+import { Store } from '@ngrx/store';
+import { logout } from 'src/app/store/actions/user.actions';
+import { selectIsAuthenticated } from 'src/app/store/selectors/user.selectors';
 
 @Component({
 	selector: 'app-header',
@@ -8,16 +9,13 @@ import { AuthenticationService } from '../../../common/services/authentication.s
 	styleUrls: ['./header.component.less'],
 })
 export class HeaderComponent implements OnInit {
-	constructor(private authenticationService: AuthenticationService, private router: Router) {}
+	public isAuthenticated$ = this.store.select(selectIsAuthenticated);
+
+	constructor(private store: Store) {}
 
 	ngOnInit(): void {}
 
 	public onLogout(): void {
-		this.authenticationService.logout();
-		this.router.navigateByUrl('login');
-	}
-
-	public isAuthenticated(): boolean {
-		return this.authenticationService.isAuthenticated();
+		this.store.dispatch(logout());
 	}
 }

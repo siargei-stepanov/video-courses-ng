@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Author, Course } from 'src/app/common/course.model';
+import { Course } from 'src/app/common/course.model';
 import { CoursesService } from 'src/app/common/services/courses.service';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Observable, Subscription } from 'rxjs';
-import { AuthorsService } from 'src/app/common/services/authors.service';
+import { Subscription } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Store } from '@ngrx/store';
+import { selectAuthors } from 'src/app/store/selectors/authors.selectors';
+import { loadAuthors } from 'src/app/store/actions/authors.actions';
 
 @Component({
 	selector: 'app-add-course-form',
@@ -15,18 +16,18 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class AddCourseFormComponent implements OnInit, OnDestroy {
 	public course: Course;
 	public isAddPage: boolean;
-	public authors: Observable<Author[]>;
+	public authors$ = this.store.select(selectAuthors);
 	private subscribtions: Subscription[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
+		private store: Store,
 		private courseService: CoursesService,
-		private authorsService: AuthorsService,
 		private router: Router
 	) {}
 
 	ngOnInit(): void {
-		this.authors = this.authorsService.getAuthors();
+		this.store.dispatch(loadAuthors());
 		this.route.paramMap.subscribe((routeParams) => {
 			const id = parseInt(routeParams.get('id'), 10);
 			const newCourse = new Course(null, '', '', 0, '', false, []);
