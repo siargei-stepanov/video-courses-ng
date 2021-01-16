@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ILoginFormModel } from 'src/app/common/auth.model';
 import { login } from 'src/app/store/actions/user.actions';
 
 @Component({
@@ -10,11 +11,19 @@ import { login } from 'src/app/store/actions/user.actions';
 export class LoginFormComponent implements OnInit {
 	public login: string;
 	public password: string;
+	public model: ILoginFormModel = {
+		login: '',
+		password: '',
+	};
 	constructor(private store: Store) {}
 
 	ngOnInit(): void {}
 
 	public loginSubmit(): void {
-		this.store.dispatch(login({ login: this.login, password: this.password }));
+		this.store.dispatch(login(this.model));
+	}
+
+	public forgotPassword(event): void {
+		event.preventDefault();
 	}
 }

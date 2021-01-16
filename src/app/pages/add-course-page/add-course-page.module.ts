@@ -6,7 +6,7 @@ import { HeaderModule } from '../../common/components/header/header.module';
 import { FooterModule } from '../../common/components/footer/footer.module';
 import { AddCourseFormComponent } from './add-course-form/add-course-form.component';
 import { DurationInputComponent } from './duration-input/duration-input.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbsModule } from '../../common/components/breadcrumbs/breadcrumbs.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 		BreadcrumbsModule,
 		FooterModule,
 		FormsModule,
+		ReactiveFormsModule,
 		MatChipsModule,
 		MatFormFieldModule,
 		MatIconModule,

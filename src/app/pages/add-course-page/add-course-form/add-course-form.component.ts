@@ -1,12 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from 'src/app/common/course.model';
-import { CoursesService } from 'src/app/common/services/courses.service';
-import { Subscription } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
 import { selectAuthors } from 'src/app/store/selectors/authors.selectors';
 import { loadAuthors } from 'src/app/store/actions/authors.actions';
+import {
+	loadCourse,
+	saveCourse,
+	setCourse,
+} from 'src/app/store/actions/course.actions';
+import {
+	selectCourse,
+	selectIsAddCoursePage,
+} from 'src/app/store/selectors/course.selectors';
+import {
+	AbstractControl,
+	FormArray,
+	FormControl,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
+import { dateValidator, durationValidator } from './add-course-form.validators';
 
 @Component({
 	selector: 'app-add-course-form',
@@ -14,73 +29,61 @@ import { loadAuthors } from 'src/app/store/actions/authors.actions';
 	styleUrls: ['./add-course-form.component.less'],
 })
 export class AddCourseFormComponent implements OnInit, OnDestroy {
-	public course: Course;
-	public isAddPage: boolean;
+	public course$ = this.store.select(selectCourse);
+	public isAddPage$ = this.store.select(selectIsAddCoursePage);
 	public authors$ = this.store.select(selectAuthors);
-	private subscribtions: Subscription[] = [];
+	public courseForm = new FormGroup({
+		id: new FormControl(''),
+		title: new FormControl('', Validators.maxLength(50)),
+		description: new FormControl('', Validators.maxLength(500)),
+		date: new FormControl('', dateValidator()),
+		duration: new FormControl(0, durationValidator()),
+		authors: new FormArray([]),
+	});
 
 	constructor(
 		private route: ActivatedRoute,
 		private store: Store,
-		private courseService: CoursesService,
 		private router: Router
 	) {}
 
 	ngOnInit(): void {
 		this.store.dispatch(loadAuthors());
+		this.store.dispatch(setCourse(new Course(null, '', '', 0, '', false, [])));
 		this.route.paramMap.subscribe((routeParams) => {
 			const id = parseInt(routeParams.get('id'), 10);
-			const newCourse = new Course(null, '', '', 0, '', false, []);
-			this.course = newCourse;
-			if (isNaN(id)) {
-				this.isAddPage = true;
-			} else {
-				this.subscribtions.push(
-					this.courseService.getById(id).subscribe(
-						(data) => {
-							this.course = data;
-							this.isAddPage = false;
-						},
-						(error) => {
-							console.log(
-								'cannot find course. probably a new course should be here',
-								error
-							);
-							this.course = newCourse;
-							this.isAddPage = true;
-						}
-					)
-				);
+			if (!isNaN(id)) {
+				this.store.dispatch(loadCourse({ id }));
 			}
+		});
+		this.course$.subscribe((course) => {
+			this.courseForm.setValue({
+				id: course.id,
+				title: course.name,
+				description: course.description,
+				date: course.date.substring(0, 10),
+				duration: course.length,
+				authors: [],
+			});
+			const authors = (course.authors || []).map(
+				(author) => new FormControl(author)
+			);
+			this.courseForm.setControl('authors', new FormArray(authors));
 		});
 	}
 
-	public removeAuthor(event): void {
-		const index = this.course.authors.indexOf(event);
-
-		if (index >= 0) {
-			this.course.authors.splice(index, 1);
-		}
-	}
-
-	public onDurationChange(value: string): void {
-		this.course.length = parseInt(value, 10);
-	}
-
 	public onSave(): void {
-		if (this.isAddPage) {
-			this.subscribtions.push(
-				this.courseService.create(this.course).subscribe(() => {
-					this.router.navigateByUrl('courses');
-				})
-			);
-		} else {
-			this.subscribtions.push(
-				this.courseService.update(this.course).subscribe(() => {
-					this.router.navigateByUrl('courses');
-				})
-			);
-		}
+		const formValue = this.courseForm.value;
+		this.store.dispatch(
+			saveCourse({
+				id: formValue.id,
+				name: formValue.title,
+				date: formValue.date,
+				length: formValue.duration,
+				description: formValue.description,
+				authors: formValue.authors,
+			} as Course)
+		);
 	}
 
 	public onCancel(): void {
@@ -88,12 +91,28 @@ export class AddCourseFormComponent implements OnInit, OnDestroy {
 	}
 
 	public selectAuthor($event: MatAutocompleteSelectedEvent): void {
-		this.course.authors.push($event.option.value);
+		this.authors.push(new FormControl($event.option.value));
 	}
 
-	ngOnDestroy(): void {
-		this.subscribtions.forEach((subscribtion) => {
-			subscribtion.unsubscribe();
-		});
+	public removeAuthor(index): void {
+		this.authors.removeAt(index);
+	}
+
+	ngOnDestroy(): void {}
+
+	get title(): AbstractControl {
+		return this.courseForm.get('title');
+	}
+	get description(): AbstractControl {
+		return this.courseForm.get('description');
+	}
+	get date(): AbstractControl {
+		return this.courseForm.get('date');
+	}
+	get duration(): AbstractControl {
+		return this.courseForm.get('duration');
+	}
+	get authors(): FormArray {
+		return this.courseForm.get('authors') as FormArray;
 	}
 }

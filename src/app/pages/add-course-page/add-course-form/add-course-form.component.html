@@ -1,8 +1,9 @@
 <div class="add-course-form-centered">
 	<div class="add-course-form-wrapper">
-		<h4 *ngIf="isAddPage">New Course</h4>
-		<h4 *ngIf="!isAddPage">Edit Course</h4>
-		<form>
+		<h4 *ngIf="isAddPage$ | async">New Course</h4>
+		<h4 *ngIf="(isAddPage$ | async) === false">Edit Course</h4>
+		<form [formGroup]="courseForm">
+			<input type="hidden" name="id" formControlName="id" />
 			<div class="form-group">
 				<div class="d-flex">
 					<label for="title-input">Title:</label>
@@ -13,10 +14,17 @@
 					class="form-control"
 					id="title-input"
 					name="title"
-					[(ngModel)]="course.name"
-					required
+					formControlName="title"
 					placeholder="Course title"
 				/>
+				<div
+					*ngIf="title.invalid && (title.dirty || title.touched)"
+					class="alert alert-danger"
+				>
+					<div *ngIf="title.errors.maxlength">
+						Max length of title is 50 symbols
+					</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="d-flex">
@@ -27,21 +35,35 @@
 					class="form-control"
 					id="description-input"
 					name="description"
-					[(ngModel)]="course.description"
-					required
+					formControlName="description"
 					placeholder="Add some words about the course"
 					rows="3"
 				></textarea>
+				<div
+					*ngIf="
+						description.invalid && (description.dirty || description.touched)
+					"
+					class="alert alert-danger"
+				>
+					<div *ngIf="description.errors.maxlength">
+						Max length of description is 500 symbols
+					</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="d-flex">
 					<label for="duration-input">Duration:</label>
 					<span class="required">*required</span>
 				</div>
-				<app-duration-input
-					[(duration)]="course.length"
-					(durationChange)="onDurationChange($event)"
-				></app-duration-input>
+				<app-duration-input formControlName="duration"></app-duration-input>
+				<div
+					*ngIf="duration?.invalid && (duration?.dirty || duration?.touched)"
+					class="alert alert-danger"
+				>
+					<div *ngIf="duration?.errors?.duration">
+						Duration should be a positive value
+					</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="d-flex">
@@ -54,9 +76,15 @@
 						class="form-control col-4"
 						type="date"
 						name="date-input"
-						[(ngModel)]="course.date"
+						formControlName="date"
 						id="date-input"
 					/>
+					<div
+						*ngIf="date.invalid && (date.dirty || date.touched)"
+						class="alert alert-danger"
+					>
+						<div *ngIf="date.errors.date">Date should be valid</div>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -65,13 +93,17 @@
 					<span class="required">*required</span>
 				</div>
 				<mat-form-field class="authors-chip-list">
-					<mat-chip-list #chipList aria-label="Author selection">
+					<mat-chip-list
+						#chipList
+						aria-label="Author selection"
+						arrayControlName="authors"
+					>
 						<mat-chip
-							*ngFor="let author of course.authors"
+							*ngFor="let author of authors.controls; let i = index"
 							[removable]="true"
-							(removed)="removeAuthor(author)"
+							(removed)="removeAuthor(i)"
 						>
-							{{ author.name }}
+							{{ author.value.name }}
 							<mat-icon matChipRemove>cancel</mat-icon>
 						</mat-chip>
 						<input
